@@ -1,0 +1,75 @@
+#                           ,;                                    .,               
+#             i           f#i           .Gt                      ,Wt               
+#            LE         .E#t           j#W:             ..      i#D.  f.     ;WE.  
+#           L#E        i#W,          ;K#f              ;W,     f#f    E#,   i#G    
+#          G#W.       L#D.         .G#D.              j##,   .D#i     E#t  f#f     
+#         D#K.      :K#Wfff;      j#K;               G###,  :KW,      E#t G#i      
+#        E#K.       i##WLLLLt   ,K#f   ,GD;        :E####,  t#f       E#jEW,       
+#      .E#E.         .E#L        j#Wi   E#t       ;W#DG##,   ;#G      E##E.        
+#     .K#E             f#E:       .G#D: E#t      j###DW##,    :KE.    E#G          
+#    .K#D               ,WW;        ,K#fK#t     G##i,,G##,     .DW:   E#t          
+#   .W#G                 .D#;         j###t   :K#K:   L##,       L#,  E#t          
+#  :W##########Wt          tt          .G#t  ;##D.    L##,        jt  EE.          
+#  :,,,,,,,,,,,,,.  :                    ;;  ,,, :    .,,             t            
+#                  t#,                          t#,      L.                       .
+#  t              ;##W.                t       ;##W.     EW:        ,ft          ;W
+#  ED.           :#L:WE     GEEEEEEEL  Ej     :#L:WE     E##;       t#E         f#E
+#  E#K:         .KG  ,#D    ,;;L#K;;.  E#,   .KG  ,#D    E###t      t#E       .E#f 
+#  E##W;        EE    ;#f      t#E     E#t   EE    ;#f   E#fE#f     t#E      iWW;  
+#  E#E##t      f#.     t#i     t#E     E#t  f#.     t#i  E#t D#G    t#E     L##Lffi
+#  E#ti##f     :#G     GK      t#E     E#t  :#G     GK   E#t  f#E.  t#E    tLLG##L 
+#  E#t ;##D.    ;#L   LW.      t#E     E#t   ;#L   LW.   E#t   t#K: t#E      ,W#i  
+#  E#ELLE##K:    t#f f#:       t#E     E#t    t#f f#:    E#t    ;#W,t#E     j#E.   
+#  E#L;;;;;;,     f#D#;        t#E     E#t     f#D#;     E#t     :K#D#E   .D#j     
+#  E#t             G#t         t#E     E#t      G#t      E#t      .E##E  ,WK,      
+#  E#t              t           fE     E#t       t       ..         G#E  EG.       
+#                                :     ,;.                           fE  ,         
+#                                                                     ,            
+#
+#                             ,ggggggggggg,         ,gg,          ,gggg,   
+#   ,dPYb,                    dP"""88""""""Y8,      i8""8i        d8" "8I  
+#   IP'`Yb                    Yb,  88      `8b      `8,,8'        88  ,dP  
+#   I8  8I                     `"  88      ,8P       `88'      8888888P"   
+#   I8  8'                         88aaaad8P"        dP"8,        88       
+#   I8 dP       gg     gg          88""""Yb,        dP' `8a       88       
+#   I8dP   88gg I8     8I          88     "8b      dP'   `Yb ,aa,_88       
+#   I8P    8I   I8,   ,8I          88      `8i _ ,dP'     I8dP" "88P       
+#  ,d8b,  ,8I  ,d8b, ,d8I          88       Yb,"888,,____,dPYb,_,d88b,,_   
+#  8P'"Y88P"'  P""Y88P"888         88        Y8a8P"Y88888P"  "Y8P"  "Y88888
+#                    ,d8I'                                                 
+#                  ,dP'8I                                                  
+#                 ,8"  8I                                                  
+#                 I8   8I                                                  
+#                 `8, ,8I                                                  
+#                  `Y8P"                                                   
+#
+# x=x=x=x=x=x=x=x=x
+# | CONFIGURATION |
+# x=x=x=x=x=x=x=x=x
+# Please don't change the config version.
+configversion: 3
+# All messages sent from the plugin will have this in front of it.
+prefix: "&7[&1LegacyPotions&7] "
+# When the player executes a /lp command but doesn't have permission.
+nopermission: "&cYou don't have permission."
+# Enable or disable legacy mode for each potion type here. This reverts potion behaviour to 1.5 mechanics.
+legacymode:
+    # 1.5 and before = 1.5 extra hearts of damage per level (regardless of weapon).
+    # 1.6 onwards = 130% extra damage per level (regardless of weapon).
+    strength:
+        enabled: true
+        # 3 damage = 1.5 hearts. Whole numbers please!
+        damageperlevel: 3
+    # 1.5 and before = 3 hearts healed per level.
+    # 1.6 onwards = 2 hearts healed per level.
+    healing:
+        enabled: true
+        # Multiplier for the amount of hearts healing potions give you per level.
+        # e.g. 1.5 would make a healing potion give you 3 hearts per level, instead of the default 2.
+        healmultiplier: 1.5
+    # 1.5 and before = 1 heart is gained every 1.25 seconds.
+    # 1.6 onwards = 1 heart is gained every 2.5 seconds.
+    regeneration:
+        enabled: true
+        # 1 = 1 hearts. You can only use numbers that end in .5 or .0.
+        extraheartsperlevel: 1.0

@@ -18,3 +18,5 @@ Revert potion mechanics back to Minecraft 1.5.
  * Each hit deals 1.5 hearts of damage per level, regardless of weapon.
 * 1.6:
  * Each hit deals 130% more damage per level, regardless of weapon.
+
+It's all 100% ![configurable](https://github.com/HunterGPlays/LegacyPotions/blob/master/src/main/resources/config.yml)!

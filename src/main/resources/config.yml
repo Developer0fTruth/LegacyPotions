@@ -43,33 +43,43 @@
 #                 `8, ,8I                                                  
 #                  `Y8P"                                                   
 #
+# x=x=x=x=x=x=x=x
+# | INFORMATION |
+# x=x=x=x=x=x=x=x
+# Healing fix
+#    1.5:
+#        Base healing is 3 hearts, with health gained doubling per additional level.
+#    1.6:
+#        Base healing is 2 hearts, with health gained doubling per additional level.
+# Regeneration fix
+#    1.5:
+#        One heart gained every 1.25 seconds, with time needed halving per additional level.
+#    1.6:
+#        One heart gained every 2.5 seconds, with time needed halving per additional level.
+# Strength fix
+#    1.5:
+#        Each hit deals 1.5 hearts of damage per level, regardless of weapon.
+#    1.6:
+#        Each hit deals 130% more damage per level, regardless of weapon.
+#
 # x=x=x=x=x=x=x=x=x
 # | CONFIGURATION |
 # x=x=x=x=x=x=x=x=x
 # Please don't change the config version.
 configversion: 3
-# All messages sent from the plugin will have this in front of it.
 prefix: "&7[&1LegacyPotions&7] "
-# When the player executes a /lp command but doesn't have permission.
 nopermission: "&cYou don't have permission."
-# Enable or disable legacy mode for each potion type here. This reverts potion behaviour to 1.5 mechanics.
+# Enable and configure potion mechanics reverting back to how they worked in Minecraft 1.5.
 legacymode:
-    # 1.5 and before = 1.5 extra hearts of damage per level (regardless of weapon).
-    # 1.6 onwards = 130% extra damage per level (regardless of weapon).
     strength:
         enabled: true
-        # 3 damage = 1.5 hearts. Whole numbers please!
+        # 3 damage = 1.5 hearts.
         damageperlevel: 3
-    # 1.5 and before = 3 hearts healed per level.
-    # 1.6 onwards = 2 hearts healed per level.
     healing:
         enabled: true
-        # Multiplier for the amount of hearts healing potions give you per level.
-        # e.g. 1.5 would make a healing potion give you 3 hearts per level, instead of the default 2.
+        # 1.5 would make a healing potion give you 3 hearts per level, instead of the default 2.
         healmultiplier: 1.5
-    # 1.5 and before = 1 heart is gained every 1.25 seconds.
-    # 1.6 onwards = 1 heart is gained every 2.5 seconds.
     regeneration:
         enabled: true
-        # 1 = 1 hearts. You can only use numbers that end in .5 or .0.
+        # This must end in .5 or .0.
         extraheartsperlevel: 1.0

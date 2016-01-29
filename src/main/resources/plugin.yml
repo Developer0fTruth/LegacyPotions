@@ -1,6 +1,6 @@
 name: LegacyPotions
 main: net.terrocidepvp.legacypotions.PluginLauncher
-version: 1.4
+version: 1.4.1
 authors: [HunterGPlays, Byteflux]
 description: Revert potion mechanics back to Minecraft 1.5.
 website: http://www.terrocidepvp.net/

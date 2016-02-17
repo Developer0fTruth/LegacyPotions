@@ -18,7 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Map;
 
 public final class StrengthHandler {
-    int DamagePerLevel = PluginLauncher.plugin.getConfig().getInt("legacymode.strength.damageperlevel");
+    final int damagePerLevel = PluginLauncher.plugin.getConfig().getInt("legacymode.strength.damageperlevel");
     // It'd be good to change this Map when Minecraft 1.9 releases.
     private final static Map<Material, Double> baseDamageValues = ImmutableMap.<Material, Double>builder()
         // Swords
@@ -142,7 +142,7 @@ public final class StrengthHandler {
         criticalStrengthDamage = criticalDamage * (amplifier + 1) * 1.3;
 
         // Add +3 or +6 to the final damage depending on Strength level
-        finalDamage += DamagePerLevel << amplifier;
+        finalDamage += damagePerLevel << amplifier;
     }
 
     // Take into consideration the weakness effect.

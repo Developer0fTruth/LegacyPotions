@@ -46,9 +46,11 @@ public class PluginLauncher extends JavaPlugin implements Listener {
         }
         getLogger().info("The config is not broken.");
         getLogger().info("Checking if the config is outdated...");
-        if (getConfig().getInt("configversion") != 3) {
+        // Add version info here when you change the config version to 4.
+        final int configVersion = 3;
+        if (getConfig().getInt("configversion") != configVersion) {
             getLogger().severe("Your config is outdated!");
-            getLogger().severe("The plugin will not load unless you change the config version to 3.");
+            getLogger().severe("The plugin will not load unless you change the config version to " + configVersion + ".");
             getLogger().severe("This means that you will need to reset your config, as there may have been major changes to the plugin.");
             getServer().getPluginManager().disablePlugin(this);
             return;

@@ -7,13 +7,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class CommandManager implements CommandExecutor
-{
+public class CommandManager implements CommandExecutor {
     // What to do when a player types a command.
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Initialise basic messages, including prefix and no permission message.
-        String Prefix = ColorCodeUtil.translateAlternateColorCodes('&', PluginLauncher.plugin.getConfig().getString("prefix"));
-        String NoPermission = ColorCodeUtil.translateAlternateColorCodes('&', PluginLauncher.plugin.getConfig().getString("nopermission"));
+        final String prefix = ColorCodeUtil.translateAlternateColorCodes('&', PluginLauncher.plugin.getConfig().getString("prefix"));
+        final String noPermission = ColorCodeUtil.translateAlternateColorCodes('&', PluginLauncher.plugin.getConfig().getString("nopermission"));
         
         // Checks for the right commands in case something happens.
         if (!cmd.getName().equalsIgnoreCase("legacypotions") && !cmd.getName().equalsIgnoreCase("lp")) {
@@ -23,24 +22,24 @@ public class CommandManager implements CommandExecutor
         // Check for an args length that is greater than or equal to 1.
         if (args.length >= 1) {
             // Ensure the first letter is extracted.
-            String FirstLetterFromArg = args[0].substring(0, 1);
+            String firstLetterFromArg = args[0].substring(0, 1);
             // Make sure the argument starts with the letter "r".
-            if (FirstLetterFromArg.equalsIgnoreCase("r")) {
+            if (firstLetterFromArg.equalsIgnoreCase("r")) {
                 // Check for a permission node.
                 if (sender.hasPermission("legacypotions.reload")) {
                     // Call CmdReload.
                     CmdReload.onReload(sender);
                 } else {
                     // Output the no permission message otherwise.
-                    sender.sendMessage(Prefix + NoPermission);
+                    sender.sendMessage(prefix + noPermission);
                 }
             }
             // Make sure the argument starts with the letter "a".
-            if (FirstLetterFromArg.equalsIgnoreCase("a")) {
+            if (firstLetterFromArg.equalsIgnoreCase("a")) {
                 // Call CmdAbout.
                 CmdAbout.onAbout(sender);
             }
         }
-        return false;
+        return true;
     }
 }

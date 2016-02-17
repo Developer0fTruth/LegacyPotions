@@ -21,16 +21,16 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 public class PotionEventListener implements Listener {
-    private Plugin plugin;
+    final private Plugin plugin;
     // Load some data from the configuration file.
-    boolean StrengthFix = PluginLauncher.plugin.getConfig().getBoolean("legacymode.strength.enabled");
-    boolean HealingFix = PluginLauncher.plugin.getConfig().getBoolean("legacymode.healing.enabled");
-    boolean RegenerationFix = PluginLauncher.plugin.getConfig().getBoolean("legacymode.regeneration.enabled");
-    double HealMultiplier = PluginLauncher.plugin.getConfig().getDouble("legacymode.healing.healmultiplier");
-    double ExtraHeartsPerLevel = PluginLauncher.plugin.getConfig().getInt("legacymode.regeneration.extraheartsperlevel");
+    final boolean strengthFix = PluginLauncher.plugin.getConfig().getBoolean("legacymode.strength.enabled");
+    final boolean healingFix = PluginLauncher.plugin.getConfig().getBoolean("legacymode.healing.enabled");
+    final boolean regenerationFix = PluginLauncher.plugin.getConfig().getBoolean("legacymode.regeneration.enabled");
+    final double healMultiplier = PluginLauncher.plugin.getConfig().getDouble("legacymode.healing.healmultiplier");
+    final double extraHeartsPerLevel = PluginLauncher.plugin.getConfig().getInt("legacymode.regeneration.extraheartsperlevel");
     
     // Set up the scheduler.
-    BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+    final BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
     
     // Constructor in order to enable this as a listener.
     public PotionEventListener(final Plugin plugin) {
@@ -42,7 +42,8 @@ public class PotionEventListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onRegainHealth(final EntityRegainHealthEvent event) {
         // Check if either one of these bad boys are set to true.
-        if (HealingFix || RegenerationFix) {
+        if (healingFix 
+                || regenerationFix) {
             // Store information on the entity that regained health in the event.
             final LivingEntity entity = (LivingEntity)event.getEntity();
             
@@ -50,31 +51,43 @@ public class PotionEventListener implements Listener {
             int level = 0;
             
             // Set up a Collection for the potion effects on the player.
-            Collection<PotionEffect> Effects = (Collection<PotionEffect>)entity.getActivePotionEffects();
+            final Collection<PotionEffect> effects = (Collection<PotionEffect>)entity.getActivePotionEffects();
            
             // Iterate through the potion effects in the Collection.
-            for (final PotionEffect effect : Effects) {
+            for (final PotionEffect effect : effects) {
+                final String effectName = effect.getType().getName();
+                final int effectAmplifier = effect.getAmplifier();
                 // Check for regeneration or healing potion.
-                if (effect.getType().getName() == "REGENERATION" || effect.getType().getName() == "HEAL") {
+                if (effectName == "REGENERATION" 
+                        || effectName == "HEAL") {
                     // Add 1 to the amplifier of the potion.
-                    level = effect.getAmplifier() + 1;
+                    level = effectAmplifier + 1;
                     // Go back and continue with the code.
                     break;
                 }
             }
             
+            final EntityRegainHealthEvent.RegainReason regainReason = event.getRegainReason();
+            final double regainAmount = event.getAmount();
             // Check if health gained was because of regeneration.
-            if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.MAGIC_REGEN && event.getAmount() == 1.0 && level > 0) {
+            if (regainReason == EntityRegainHealthEvent.RegainReason.MAGIC_REGEN 
+                    && regainAmount == 1.0 
+                    && level > 0) {
                 // Check if RegenerationFix is enabled in the config.
-                if (RegenerationFix) {
+                if (regenerationFix) {
                     // Get the scheduler to run a sync task.
                     scheduler.runTaskLater(this.plugin, (Runnable)new Runnable() {
                         @Override
                         public void run() {
+                            // Check if the entity is dead.
+                            final boolean entityIsDead = entity.isDead();
+                            if (entityIsDead) return;
                             // Check if the max health is greater than or equal to the entity's health + 1.
-                            if (entity.getMaxHealth() >= entity.getHealth() + ExtraHeartsPerLevel) {
+                            final double entityMaxHealth = entity.getMaxHealth();
+                            final double entityHealth = entity.getHealth();
+                            if (entityMaxHealth >= entityHealth + extraHeartsPerLevel) {
                                 // This would add an extra heart per level.
-                                entity.setHealth(entity.getHealth() + ExtraHeartsPerLevel);
+                                entity.setHealth(entityHealth + extraHeartsPerLevel);
                             }
                         }
                     // Remember how the regeneration potion duration was half? This sorts it out.
@@ -84,25 +97,26 @@ public class PotionEventListener implements Listener {
 
             
             // If it's not those, it's got to be healing potions. Check if it was indeed a healing potion.
-            else if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.MAGIC && event.getAmount() > 1.0 && level >= 0 && HealingFix) {
+            else if (regainReason == EntityRegainHealthEvent.RegainReason.MAGIC 
+                    && regainAmount > 1.0 
+                    && level >= 0 
+                    && healingFix) {
                 // Multiply the amount of hearts the healing potion gives you by 1.5, changing the base healing from 2 to 3.
-                event.setAmount(event.getAmount() * HealMultiplier);
+                event.setAmount(regainAmount * healMultiplier);
             }
         }
     }
     
     /**
-     * The code below is not mine.
+     * The code below is not mine. It's the strength potion listener.
      * 
      * https://github.com/MinelinkNetwork/LegacyStrength
      * @author Byteflux
      */
-    
-    // Strength potion listener.
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void calculateDamage(EntityDamageByEntityEvent event) {
         // Do nothing if strength fix isn't set to true.
-        if (!StrengthFix) return;
+        if (!strengthFix) return;
         
         // Do nothing if the event is inherited (hacky way to ignore mcMMO AoE attacks).
         if (event.getClass() != EntityDamageByEntityEvent.class) return;

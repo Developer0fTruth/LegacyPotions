@@ -6,7 +6,7 @@ package net.terrocidepvp.legacypotions.handlers;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.terrocidepvp.legacypotions.PluginLauncher;
+import net.terrocidepvp.legacypotions.Main;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -18,7 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Map;
 
 public final class StrengthHandler {
-    final int damagePerLevel = PluginLauncher.plugin.getConfig().getInt("legacymode.strength.damageperlevel");
+    final int damagePerLevel = Main.plugin.getConfig().getInt("legacymode.strength.damageperlevel");
     // It'd be good to change this Map when Minecraft 1.9 releases.
     private final static Map<Material, Double> baseDamageValues = ImmutableMap.<Material, Double>builder()
         // Swords
@@ -49,7 +49,7 @@ public final class StrengthHandler {
         .put(Material.IRON_SPADE, 4.0)
         .put(Material.DIAMOND_SPADE, 5.0)
         .build();
-    
+
     // It'd be good to change this Map when Minecraft 1.9 releases.
     private final static Map<Material, Double> criticalDamageValues = ImmutableMap.<Material, Double>builder()
         // Swords

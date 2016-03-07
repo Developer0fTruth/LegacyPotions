@@ -29,6 +29,8 @@ prefix: "&7[&1LegacyPotions&7] "
 nopermission: "&cYou don't have permission."
 # Enable and configure potion mechanics reverting back to how they worked in Minecraft 1.5.
 legacymode:
+    # The strength fix will not even enable if you're running 1.9 or above. You can't disable it doing that.
+    # Strength behaviour was reverted back to Minecraft 1.5 behaviour in Minecraft 1.9.
     strength:
         enabled: true
         # 3 damage = 1.5 hearts.

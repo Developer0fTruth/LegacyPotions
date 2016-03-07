@@ -1,6 +1,6 @@
 package net.terrocidepvp.legacypotions.commands;
 
-import net.terrocidepvp.legacypotions.PluginLauncher;
+import net.terrocidepvp.legacypotions.Main;
 import net.terrocidepvp.legacypotions.utils.ColorCodeUtil;
 
 import org.bukkit.Bukkit;
@@ -12,13 +12,13 @@ import org.bukkit.plugin.PluginDescriptionFile;
 public class CmdAbout {
     // Carry over command sender data from the command manager.
     public static boolean onAbout (CommandSender sender) {
-        final PluginDescriptionFile pdf = PluginLauncher.plugin.getDescription();
+        final PluginDescriptionFile pdf = Main.plugin.getDescription();
         final String version = pdf.getVersion();
         final String uid = "%%__USER__%%";
         final String rid = "%%__RESOURCE__%%";
         final String nonce = "%%__NONCE__%%";
         // Initialise the prefix.
-        final String prefix = ColorCodeUtil.translateAlternateColorCodes('&', PluginLauncher.plugin.getConfig().getString("prefix"));
+        final String prefix = ColorCodeUtil.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("prefix"));
         
         // Simple console check, in order to ensure that colour doesn't try coming up in console.
         if (!(sender instanceof Player)) {

@@ -1,6 +1,6 @@
 package net.terrocidepvp.legacypotions.commands;
 
-import net.terrocidepvp.legacypotions.PluginLauncher;
+import net.terrocidepvp.legacypotions.Main;
 import net.terrocidepvp.legacypotions.utils.ColorCodeUtil;
 
 import org.bukkit.command.Command;
@@ -11,8 +11,8 @@ public class CommandManager implements CommandExecutor {
     // What to do when a player types a command.
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Initialise basic messages, including prefix and no permission message.
-        final String prefix = ColorCodeUtil.translateAlternateColorCodes('&', PluginLauncher.plugin.getConfig().getString("prefix"));
-        final String noPermission = ColorCodeUtil.translateAlternateColorCodes('&', PluginLauncher.plugin.getConfig().getString("nopermission"));
+        final String prefix = ColorCodeUtil.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("prefix"));
+        final String noPermission = ColorCodeUtil.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("nopermission"));
         
         // Checks for the right commands in case something happens.
         if (!cmd.getName().equalsIgnoreCase("legacypotions") && !cmd.getName().equalsIgnoreCase("lp")) {

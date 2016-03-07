@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import net.terrocidepvp.legacypotions.commands.CommandManager;
-import net.terrocidepvp.legacypotions.listeners.PotionEventListener;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,23 +11,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-// RSL's simple plugin loader. It may not be the most efficient, but you can always give me examples.
-// It's not exactly easy to find good sample code I can base the main class off.
+import net.terrocidepvp.legacypotions.commands.CommandManager;
+import net.terrocidepvp.legacypotions.listeners.PotionEventListener;
 
-// It's simple enough to read, so I won't waste my time annotating all of the code below.
-
-public class PluginLauncher extends JavaPlugin implements Listener {
+public class Main extends JavaPlugin implements Listener {
     // Set up the configuration file variables.
     FileConfiguration config;
     private static YamlConfiguration conf;
     private File confFile = new File(getDataFolder(), "config.yml");
     // Allow other bits of code to use "plugin".
-    public static PluginLauncher plugin; //create the variable
+    public static Main plugin; //create the variable
     // Allow other classes to access the Main class.
-    private static PluginLauncher instance;
-    public static PluginLauncher getInstance() {
-        return PluginLauncher.instance;
+    private static Main instance;
+    public static Main getInstance() {
+        return Main.instance;
     }
+    public static String version;
+    public static double versionAsDouble;
     public void onEnable() {
         plugin = this; //assign plugin to this class
         getCommand("legacypotions").setExecutor(new CommandManager());
@@ -57,6 +54,12 @@ public class PluginLauncher extends JavaPlugin implements Listener {
         } else {
             getLogger().info("The config was not detected as outdated.");
         }
+        final String[] splitVersion = getServer().getBukkitVersion().trim().split("-");
+        version = splitVersion[0];
+        getLogger().info("Running Bukkit version " + version);
+        final String[] versionSplitAgain = version.split("\\.");
+        versionAsDouble = Double.parseDouble(versionSplitAgain[0] + "." + versionSplitAgain[1]);
+        getLogger().info("I'll reference to your Bukkit version as " + Double.toString(versionAsDouble) + " since that's a valid number format.");
         getLogger().info("Loading potion listener...");
         new PotionEventListener((Plugin)this);
         getLogger().info("Enabled!");

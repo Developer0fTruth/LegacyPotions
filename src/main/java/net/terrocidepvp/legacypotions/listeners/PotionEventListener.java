@@ -116,7 +116,7 @@ public class PotionEventListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void calculateDamage(EntityDamageByEntityEvent event) {
         // Check if the server version is 1.9 or above.
-        if (Main.versionAsDouble >= 1.9) return;
+        if (!(Main.versionAsDouble <= 1.8)) return;
 
         // Do nothing if strength fix isn't set to true.
         if (!strengthFix) return;

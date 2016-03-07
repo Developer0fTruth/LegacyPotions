@@ -1,8 +1,8 @@
-name: LegacyPotions
-main: net.terrocidepvp.legacypotions.PluginLauncher
-version: 1.5
+name: ${project.artifactId}
+main: net.terrocidepvp.legacypotions.Main
+version: ${project.version}
 authors: [Terrobility, Byteflux]
-description: Revert potion mechanics back to Minecraft 1.5.
+description: ${project.description}
 website: http://www.terrocidepvp.net/
 commands:
     legacypotions:

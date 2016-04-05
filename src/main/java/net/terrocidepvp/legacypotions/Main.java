@@ -15,13 +15,10 @@ import net.terrocidepvp.legacypotions.commands.CommandManager;
 import net.terrocidepvp.legacypotions.listeners.PotionEventListener;
 
 public class Main extends JavaPlugin implements Listener {
-    // Set up the configuration file variables.
     FileConfiguration config;
     private static YamlConfiguration conf;
     private File confFile = new File(getDataFolder(), "config.yml");
-    // Allow other bits of code to use "plugin".
-    public static Main plugin; //create the variable
-    // Allow other classes to access the Main class.
+    public static Main plugin;
     private static Main instance;
     public static Main getInstance() {
         return Main.instance;
@@ -29,7 +26,7 @@ public class Main extends JavaPlugin implements Listener {
     public static String version;
     public static double versionAsDouble;
     public void onEnable() {
-        plugin = this; //assign plugin to this class
+        plugin = this;
         getCommand("legacypotions").setExecutor(new CommandManager());
         getCommand("lp").setExecutor(new CommandManager());
         setupConfig();

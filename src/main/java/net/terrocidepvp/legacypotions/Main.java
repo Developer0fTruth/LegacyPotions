@@ -15,18 +15,20 @@ import net.terrocidepvp.legacypotions.commands.CommandManager;
 import net.terrocidepvp.legacypotions.listeners.PotionEventListener;
 
 public class Main extends JavaPlugin implements Listener {
+
     FileConfiguration config;
     private static YamlConfiguration conf;
     private File confFile = new File(getDataFolder(), "config.yml");
-    public static Main plugin;
-    private static Main instance;
+    public static Main instance;
     public static Main getInstance() {
         return Main.instance;
     }
+
     public static String version;
     public static double versionAsDouble;
+
     public void onEnable() {
-        plugin = this;
+        instance = this;
         getCommand("legacypotions").setExecutor(new CommandManager());
         getCommand("lp").setExecutor(new CommandManager());
         setupConfig();

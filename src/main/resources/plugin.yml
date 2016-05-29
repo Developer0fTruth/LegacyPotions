@@ -1,15 +1,6 @@
 name: ${project.artifactId}
-main: net.terrocidepvp.legacypotions.Main
+main: net.terrocidepvp.legacypotions.LegacyPotions
 version: ${project.version}
 authors: [Terrobility, Byteflux]
 description: ${project.description}
 website: http://www.terrocidepvp.net/
-commands:
-    legacypotions:
-        permission-message: You don't have permission.
-        aliases: [lp]
-        description: Base command for all LegacyPotions functions.
-permissions:
-    legacypotions.reload:
-        description: Allows you to use "/lp reload" for reloading the configuration.
-        default: op

@@ -4,8 +4,8 @@
  */
 package net.terrocidepvp.legacypotions.handlers;
 
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
+import net.terrocidepvp.legacypotions.LegacyPotions;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -13,9 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.google.common.collect.ImmutableMap;
-
-import net.terrocidepvp.legacypotions.Main;
+import java.util.Map;
 
 public final class StrengthHandler {
 
@@ -35,7 +33,7 @@ public final class StrengthHandler {
             // Shovels
             .put(Material.WOOD_SPADE, 2.0).put(Material.GOLD_SPADE, 2.0).put(Material.STONE_SPADE, 3.0)
             .put(Material.IRON_SPADE, 4.0).put(Material.DIAMOND_SPADE, 5.0).build();
-    // It'd be good to change this Map when Minecraft 1.9 releases.
+
     private final static Map<Material, Double> criticalDamageValues = ImmutableMap.<Material, Double> builder()
             // Swords
             .put(Material.WOOD_SWORD, 7.5).put(Material.GOLD_SWORD, 7.5).put(Material.STONE_SWORD, 9.0)
@@ -63,7 +61,7 @@ public final class StrengthHandler {
         return helper.getFinalDamage();
     }
 
-    final int damagePerLevel = Main.instance.getConfig().getInt("legacymode.strength.damageperlevel");
+    private final int damagePerLevel = LegacyPotions.instance.getConfig().getInt("legacymode.strength.damageperlevel");
 
     private double initialDamage = 0.0;
 
@@ -111,7 +109,7 @@ public final class StrengthHandler {
     private void setPlayer(final Player player) {
         // Apply weapon properties in damage calculations
         final ItemStack weapon;
-        if (Main.instance.versionAsDouble <= 1.8) {
+        if (LegacyPotions.getInstance().serverVersion <= 1.9) {
             weapon = player.getInventory().getItemInMainHand();
         } else {
             weapon = player.getInventory().getItemInHand();

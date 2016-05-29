@@ -1,7 +1,7 @@
 package net.terrocidepvp.legacypotions.listeners;
 
-import java.util.Collection;
-
+import net.terrocidepvp.legacypotions.LegacyPotions;
+import net.terrocidepvp.legacypotions.handlers.StrengthHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -17,43 +17,34 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import net.terrocidepvp.legacypotions.Main;
-import net.terrocidepvp.legacypotions.handlers.StrengthHandler;
+import java.util.Collection;
 
 public class PotionEventListener implements Listener {
 
-    final Plugin plugin;
-    final boolean strengthFix = Main.instance.getConfig().getBoolean("legacymode.strength.enabled");
-    final boolean healingFix = Main.instance.getConfig().getBoolean("legacymode.healing.enabled");
-    final boolean regenerationFix = Main.instance.getConfig().getBoolean("legacymode.regeneration.enabled");
-    final double healMultiplier = Main.instance.getConfig().getDouble("legacymode.healing.healmultiplier");
-    final double extraHeartsPerLevel = Main.instance.getConfig().getInt("legacymode.regeneration.extraheartsperlevel");
-    final BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+    private final Plugin plugin;
+    private final BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
 
     public PotionEventListener(final Plugin plugin) {
         this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, this.plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**
      * The code below is not mine. It's the strength potion listener.
      *
      * https://github.com/MinelinkNetwork/LegacyStrength
-     *
-     * @author Byteflux
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void calculateDamage(final EntityDamageByEntityEvent event) {
         // Check if the server version is 1.9 or above.
-        if (!(Main.instance.versionAsDouble <= 1.8))
+        if (LegacyPotions.getInstance().serverVersion <= 1.9)
             return;
 
         // Do nothing if strength fix isn't set to true.
-        if (!strengthFix)
+        if (!LegacyPotions.getInstance().strengthFix)
             return;
 
-        // Do nothing if the event is inherited (hacky way to ignore mcMMO AoE
-        // attacks).
+        // Do nothing if the event is inherited (hacky way to ignore mcMMO AoE attacks).
         if (event.getClass() != EntityDamageByEntityEvent.class)
             return;
 
@@ -81,7 +72,7 @@ public class PotionEventListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onRegainHealth(final EntityRegainHealthEvent event) {
-        if (healingFix || regenerationFix) {
+        if (LegacyPotions.getInstance().healingFix || LegacyPotions.getInstance().regenerationFix) {
             final LivingEntity entity = (LivingEntity) event.getEntity();
 
             int level = 0;
@@ -89,10 +80,11 @@ public class PotionEventListener implements Listener {
             final Collection<PotionEffect> effects = entity.getActivePotionEffects();
 
             for (final PotionEffect effect : effects) {
-                final String effectName = effect.getType().getName();
+                final PotionEffectType effectType = effect.getType();
                 final int effectAmplifier = effect.getAmplifier();
 
-                if (effectName == "REGENERATION" || effectName == "HEAL") {
+                if (effectType == PotionEffectType.REGENERATION
+                        || effectType == PotionEffectType.HEAL) {
                     level = effectAmplifier + 1;
                     break;
                 }
@@ -100,8 +92,10 @@ public class PotionEventListener implements Listener {
 
             final EntityRegainHealthEvent.RegainReason regainReason = event.getRegainReason();
             final double regainAmount = event.getAmount();
-            if (regainReason == EntityRegainHealthEvent.RegainReason.MAGIC_REGEN && regainAmount == 1.0 && level > 0) {
-                if (regenerationFix) {
+            if (regainReason == EntityRegainHealthEvent.RegainReason.MAGIC_REGEN
+                    && regainAmount == 1.0
+                    && level > 0) {
+                if (LegacyPotions.getInstance().regenerationFix) {
                     scheduler.runTaskLater(plugin, new Runnable() {
 
                         @Override
@@ -113,8 +107,8 @@ public class PotionEventListener implements Listener {
                             final double entityMaxHealth = entity.getMaxHealth();
                             final double entityHealth = entity.getHealth();
 
-                            if (entityMaxHealth >= entityHealth + extraHeartsPerLevel) {
-                                entity.setHealth(entityHealth + extraHeartsPerLevel);
+                            if (entityMaxHealth >= entityHealth + LegacyPotions.getInstance().extraHeartsPerLevel) {
+                                entity.setHealth(entityHealth + LegacyPotions.getInstance().extraHeartsPerLevel);
                             }
                         }
 
@@ -122,9 +116,11 @@ public class PotionEventListener implements Listener {
                 }
             }
 
-            else if (regainReason == EntityRegainHealthEvent.RegainReason.MAGIC && regainAmount > 1.0 && level >= 0
-                    && healingFix) {
-                event.setAmount(regainAmount * healMultiplier);
+            else if (regainReason == EntityRegainHealthEvent.RegainReason.MAGIC
+                    && regainAmount > 1.0
+                    && level >= 0
+                    && LegacyPotions.getInstance().healingFix) {
+                event.setAmount(regainAmount * LegacyPotions.getInstance().healMultiplier);
             }
         }
     }

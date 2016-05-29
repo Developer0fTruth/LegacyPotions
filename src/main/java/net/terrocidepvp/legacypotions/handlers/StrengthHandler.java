@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Map;
 
-public final class StrengthHandler {
+public class StrengthHandler {
 
     private final static Map<Material, Double> baseDamageValues = ImmutableMap.<Material, Double> builder()
             // Swords

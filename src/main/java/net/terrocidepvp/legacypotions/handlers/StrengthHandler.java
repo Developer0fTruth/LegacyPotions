@@ -61,7 +61,7 @@ public final class StrengthHandler {
         return helper.getFinalDamage();
     }
 
-    private final int damagePerLevel = LegacyPotions.instance.getConfig().getInt("legacymode.strength.damageperlevel");
+    private final int damagePerLevel = LegacyPotions.getInstance().getConfig().getInt("legacymode.strength.damageperlevel");
 
     private double initialDamage = 0.0;
 

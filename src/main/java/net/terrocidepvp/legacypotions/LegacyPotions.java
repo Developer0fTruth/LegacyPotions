@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class LegacyPotions extends JavaPlugin {
 
-    public static LegacyPotions instance;
+    private static LegacyPotions instance;
     public static LegacyPotions getInstance() {
         return instance;
     }
@@ -53,7 +53,6 @@ public class LegacyPotions extends JavaPlugin {
 
         // Get the Minecraft server version.
         serverVersion = getMCVersion();
-
         getLogger().info("Running server version " + serverVersion);
 
         // Load listeners.

@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.terrocidepvp</groupId>
     <artifactId>LegacyPotions</artifactId>
-    <version>1.6.2</version>
+    <version>1.6.3</version>
     <description>Revert potion mechanics back to Minecraft 1.5.</description>
     <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.9-R0.1-SNAPSHOT</version>
+            <version>1.10-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

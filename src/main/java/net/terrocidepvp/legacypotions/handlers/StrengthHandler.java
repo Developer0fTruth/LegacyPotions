@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class StrengthHandler {
 
-    private final static Map<Material, Double> baseDamageValues = ImmutableMap.<Material, Double> builder()
+    private static Map<Material, Double> baseDamageValues = ImmutableMap.<Material, Double> builder()
             // Swords
             .put(Material.WOOD_SWORD, 5.0).put(Material.GOLD_SWORD, 5.0).put(Material.STONE_SWORD, 6.0)
             .put(Material.IRON_SWORD, 7.0).put(Material.DIAMOND_SWORD, 8.0)
@@ -34,7 +34,7 @@ public class StrengthHandler {
             .put(Material.WOOD_SPADE, 2.0).put(Material.GOLD_SPADE, 2.0).put(Material.STONE_SPADE, 3.0)
             .put(Material.IRON_SPADE, 4.0).put(Material.DIAMOND_SPADE, 5.0).build();
 
-    private final static Map<Material, Double> criticalDamageValues = ImmutableMap.<Material, Double> builder()
+    private static Map<Material, Double> criticalDamageValues = ImmutableMap.<Material, Double> builder()
             // Swords
             .put(Material.WOOD_SWORD, 7.5).put(Material.GOLD_SWORD, 7.5).put(Material.STONE_SWORD, 9.0)
             .put(Material.IRON_SWORD, 10.5).put(Material.DIAMOND_SWORD, 12.0)
@@ -51,9 +51,9 @@ public class StrengthHandler {
             .put(Material.WOOD_SPADE, 3.0).put(Material.GOLD_SPADE, 3.0).put(Material.STONE_SPADE, 4.5)
             .put(Material.IRON_SPADE, 6.0).put(Material.DIAMOND_SPADE, 7.5).build();
 
-    // Convert the initial damage into the final damage.
-    public static double convertDamage(final Player player, final double initialDamage) {
-        final StrengthHandler helper = new StrengthHandler();
+    // Convert the initial damage into the damage.
+    public static double convertDamage(Player player, double initialDamage) {
+        StrengthHandler helper = new StrengthHandler();
 
         helper.initialDamage = initialDamage;
         helper.setPlayer(player);
@@ -61,7 +61,7 @@ public class StrengthHandler {
         return helper.getFinalDamage();
     }
 
-    private final int damagePerLevel = LegacyPotions.getInstance().getConfig().getInt("legacymode.strength.damageperlevel");
+    private int damagePerLevel = LegacyPotions.getInstance().damagePerLevel;
 
     private double initialDamage = 0.0;
 
@@ -79,22 +79,22 @@ public class StrengthHandler {
 
     private double finalDamage = 0.0;
 
-    // Process the final damage.
+    // Process the damage.
     private double getFinalDamage() {
         // Undo all the Vanilla math using base damage numbers
-        final double calculatedBase = initialDamage - extraDamage - baseStrengthDamage - weaknessDamage - baseDamage;
+        double calculatedBase = initialDamage - extraDamage - baseStrengthDamage - weaknessDamage - baseDamage;
 
         // Undo all the Vanilla math using critical damage numbers
-        final double calculatedCritical = initialDamage - extraDamage - criticalStrengthDamage - weaknessDamage
+        double calculatedCritical = initialDamage - extraDamage - criticalStrengthDamage - weaknessDamage
                 - criticalDamage;
 
-        // Return final damage using base damage numbers
+        // Return damage using base damage numbers
         if (calculatedBase > -1.5 && calculatedBase < 1.5) {
             finalDamage += baseDamage;
             return finalDamage;
         }
 
-        // Return final damage using critical damage numbers
+        // Return damage using critical damage numbers
         if (calculatedCritical > -1.5 && calculatedCritical < 1.5) {
             finalDamage += criticalDamage;
             return finalDamage;
@@ -106,10 +106,11 @@ public class StrengthHandler {
 
     // Apply the effects to the player.
     @SuppressWarnings("deprecation")
-    private void setPlayer(final Player player) {
+    private void setPlayer(Player player) {
         // Apply weapon properties in damage calculations
-        final ItemStack weapon;
-        if (LegacyPotions.getInstance().serverVersion <= 1.9) {
+        ItemStack weapon;
+        if (LegacyPotions.getInstance().serverVersion[0] == 1
+                && LegacyPotions.getInstance().serverVersion[1] >= 9) {
             weapon = player.getInventory().getItemInMainHand();
         } else {
             weapon = player.getInventory().getItemInHand();
@@ -120,7 +121,7 @@ public class StrengthHandler {
         }
 
         // Apply strength and weakness effects in damage calculations
-        for (final PotionEffect e : player.getActivePotionEffects()) {
+        for (PotionEffect e : player.getActivePotionEffects()) {
             if (e.getType().equals(PotionEffectType.INCREASE_DAMAGE)) {
                 setStrength(e.getAmplifier());
             } else if (e.getType().equals(PotionEffectType.WEAKNESS)) {
@@ -130,29 +131,29 @@ public class StrengthHandler {
     }
 
     // Set the strength amount for the attack.
-    private void setStrength(final int amplifier) {
+    private void setStrength(int amplifier) {
         // This is the Vanilla damage bonus that is added to a normal attack
         baseStrengthDamage = baseDamage * (amplifier + 1) * 1.3;
 
         // This is the Vanilla damage bonus that is added to a critical attack
         criticalStrengthDamage = criticalDamage * (amplifier + 1) * 1.3;
 
-        // Add +3 or +6 to the final damage depending on Strength level
+        // Add +3 or +6 to the damage depending on Strength level
         finalDamage += damagePerLevel << amplifier;
     }
 
     // Take into consideration the weakness effect.
-    private void setWeakness(final int amplifier) {
+    private void setWeakness(int amplifier) {
         // This is the vanilla damage reduction from Weakness
         weaknessDamage = (amplifier + 1) * -0.5;
 
-        // Reduce final damage by appropriate Weakness amount
+        // Reduce damage by appropriate Weakness amount
         finalDamage += weaknessDamage;
     }
 
     // Find out the damage caused by the item.
-    private void setWeapon(final ItemStack item) {
-        final Material type = item.getType();
+    private void setWeapon(ItemStack item) {
+        Material type = item.getType();
 
         // Find the base damage values for this weapon type
         //
@@ -176,7 +177,7 @@ public class StrengthHandler {
         // Calculate Sharpness damage
         extraDamage += item.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25;
 
-        // Add the calculated Sharpness damage to the final damage
+        // Add the calculated Sharpness damage to the damage
         finalDamage += extraDamage;
     }
 
